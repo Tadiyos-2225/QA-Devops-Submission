@@ -1,17 +1,38 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
-import request = require('supertest');
+import request from 'supertest';
+import type { Server } from 'node:http';
 import { AppModule } from '../../../app.module';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface ApiResponse<T> {
+  statusCode: number;
+  message: string;
+  data: T;
+}
+
+const getResponseBody = <T>(response: { body: unknown }): ApiResponse<T> => {
+  return response.body as ApiResponse<T>;
+};
 
 describe('Users API (E2E)', () => {
   let app: INestApplication;
+  let server: Server;
   let seq = 0;
 
   const baseUrl = '/users';
 
   const nextToken = () => `${Date.now()}_${++seq}`;
   const uniqueEmail = () => `user_${nextToken()}@example.com`;
+
   const validUser = (
     overrides: Partial<{ name: string; email: string }> = {},
   ) => ({
@@ -22,13 +43,13 @@ describe('Users API (E2E)', () => {
 
   const createUser = async (
     overrides: Partial<{ name: string; email: string }> = {},
-  ) => {
-    const res = await request(app.getHttpServer())
+  ): Promise<User> => {
+    const response = await request(server)
       .post(baseUrl)
       .send(validUser(overrides))
       .expect(201);
 
-    return res.body.data;
+    return getResponseBody<User>(response).data;
   };
 
   beforeAll(async () => {
@@ -37,6 +58,7 @@ describe('Users API (E2E)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -46,6 +68,8 @@ describe('Users API (E2E)', () => {
     );
 
     await app.init();
+
+    server = app.getHttpServer() as Server;
   });
 
   afterAll(async () => {
@@ -57,63 +81,64 @@ describe('Users API (E2E)', () => {
     it('should create a user with valid data', async () => {
       const payload = validUser();
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .post(baseUrl)
         .send(payload)
         .expect(201);
 
-      expect(response.body.statusCode).toBe(201);
-      expect(response.body.message).toBe('User created successfully');
-      expect(response.body.data).toMatchObject({
+      const body = getResponseBody<User>(response);
+
+      expect(body.statusCode).toBe(201);
+      expect(body.message).toBe('User created successfully');
+      expect(body.data).toMatchObject({
         name: payload.name,
         email: payload.email.toLowerCase(),
       });
-      expect(response.body.data.id).toBeDefined();
-      expect(response.body.data.createdAt).toBeDefined();
-      expect(response.body.data.updatedAt).toBeDefined();
+      expect(body.data.id).toBeDefined();
+      expect(body.data.createdAt).toBeDefined();
+      expect(body.data.updatedAt).toBeDefined();
     });
 
     // TC_USER_002
     it('should reject a duplicate email with 409 Conflict', async () => {
       const payload = validUser();
 
-      await request(app.getHttpServer())
-        .post(baseUrl)
-        .send(payload)
-        .expect(201);
+      await request(server).post(baseUrl).send(payload).expect(201);
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .post(baseUrl)
         .send(payload)
         .expect(409);
 
-      expect(response.body.statusCode).toBe(409);
-      expect(response.body.message).toBe('User already exists');
+      const body = getResponseBody<unknown>(response);
+
+      expect(body.statusCode).toBe(409);
+      expect(body.message).toBe('User already exists');
     });
 
     // TC_USER_003
     it('should reject a request missing name', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .post(baseUrl)
         .send({ email: uniqueEmail() })
         .expect(400);
 
-      expect(response.body.statusCode).toBe(400);
+      expect(getResponseBody<unknown>(response).statusCode).toBe(400);
     });
 
     // TC_USER_004
     it('should reject a request missing email', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .post(baseUrl)
         .send({ name: 'Tadiyos' })
         .expect(400);
 
-      expect(response.body.statusCode).toBe(400);
+      expect(getResponseBody<unknown>(response).statusCode).toBe(400);
     });
 
     // TC_USER_005
     it('should reject an invalid email address', async () => {
-      await request(app.getHttpServer())
+      await request(server)
         .post(baseUrl)
         .send({
           name: 'Tadiyos',
@@ -124,7 +149,7 @@ describe('Users API (E2E)', () => {
 
     // TC_USER_006
     it('should reject an empty name', async () => {
-      await request(app.getHttpServer())
+      await request(server)
         .post(baseUrl)
         .send({
           name: '',
@@ -135,7 +160,7 @@ describe('Users API (E2E)', () => {
 
     // TC_USER_007
     it('should reject an empty email', async () => {
-      await request(app.getHttpServer())
+      await request(server)
         .post(baseUrl)
         .send({
           name: 'Tadiyos',
@@ -146,7 +171,7 @@ describe('Users API (E2E)', () => {
 
     // TC_USER_008
     it('should reject a null name', async () => {
-      await request(app.getHttpServer())
+      await request(server)
         .post(baseUrl)
         .send({
           name: null,
@@ -157,7 +182,7 @@ describe('Users API (E2E)', () => {
 
     // TC_USER_009
     it('should reject a null email', async () => {
-      await request(app.getHttpServer())
+      await request(server)
         .post(baseUrl)
         .send({
           name: 'Tadiyos',
@@ -168,12 +193,12 @@ describe('Users API (E2E)', () => {
 
     // TC_USER_010
     it('should reject a missing request body', async () => {
-      await request(app.getHttpServer()).post(baseUrl).expect(400);
+      await request(server).post(baseUrl).expect(400);
     });
 
     // TC_USER_011
     it('should reject unsupported extra properties', async () => {
-      await request(app.getHttpServer())
+      await request(server)
         .post(baseUrl)
         .send({
           name: 'Tadiyos',
@@ -185,7 +210,7 @@ describe('Users API (E2E)', () => {
 
     // TC_USER_012
     it('should reject whitespace-only name and email', async () => {
-      await request(app.getHttpServer())
+      await request(server)
         .post(baseUrl)
         .send({
           name: '   ',
@@ -199,7 +224,7 @@ describe('Users API (E2E)', () => {
       const token = nextToken();
       const uppercaseEmail = `UPPER_${token}@EXAMPLE.COM`;
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .post(baseUrl)
         .send({
           name: 'Uppercase User',
@@ -207,12 +232,14 @@ describe('Users API (E2E)', () => {
         })
         .expect(201);
 
-      expect(response.body.data.email).toBe(uppercaseEmail.toLowerCase());
+      const body = getResponseBody<User>(response);
+
+      expect(body.data.email).toBe(uppercaseEmail.toLowerCase());
     });
 
     // TC_USER_014
     it('should reject a name exceeding maximum allowed length', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .post(baseUrl)
         .send({
           name: 'A'.repeat(10000),
@@ -220,19 +247,21 @@ describe('Users API (E2E)', () => {
         })
         .expect(400);
 
-      expect(response.body.statusCode).toBe(400);
+      expect(getResponseBody<unknown>(response).statusCode).toBe(400);
     });
 
     // TC_USER_015
     it('should support valid special and Unicode characters in names', async () => {
       const payload = validUser({ name: "José O'Neil-Test" });
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .post(baseUrl)
         .send(payload)
         .expect(201);
 
-      expect(response.body.data.name).toBe(payload.name);
+      const body = getResponseBody<User>(response);
+
+      expect(body.data.name).toBe(payload.name);
     });
   });
 
@@ -241,30 +270,30 @@ describe('Users API (E2E)', () => {
     it('should retrieve an existing user by ID', async () => {
       const created = await createUser();
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .get(`${baseUrl}/${created.id}`)
         .expect(200);
 
-      expect(response.body.data.id).toBe(created.id);
-      expect(response.body.data.email).toBe(created.email);
+      const body = getResponseBody<User>(response);
+
+      expect(body.data.id).toBe(created.id);
+      expect(body.data.email).toBe(created.email);
     });
 
     // TC_USER_017
     it('should return 404 for a nonexistent user', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .get(`${baseUrl}/99999999`)
         .expect(404);
 
-      expect(response.body.statusCode).toBe(404);
+      expect(getResponseBody<unknown>(response).statusCode).toBe(404);
     });
 
     // TC_USER_018
     it('should reject a non-numeric user ID with 400', async () => {
-      const response = await request(app.getHttpServer())
-        .get(`${baseUrl}/abc`)
-        .expect(400);
+      const response = await request(server).get(`${baseUrl}/abc`).expect(400);
 
-      expect(response.body.statusCode).toBe(400);
+      expect(getResponseBody<unknown>(response).statusCode).toBe(400);
     });
   });
 
@@ -273,13 +302,15 @@ describe('Users API (E2E)', () => {
     it('should update an existing user', async () => {
       const created = await createUser();
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .put(`${baseUrl}/${created.id}`)
         .send({ name: 'Jane Doe' })
         .expect(200);
 
-      expect(response.body.data.id).toBe(created.id);
-      expect(response.body.data.name).toBe('Jane Doe');
+      const body = getResponseBody<User>(response);
+
+      expect(body.data.id).toBe(created.id);
+      expect(body.data.name).toBe('Jane Doe');
     });
 
     // TC_USER_020
@@ -287,19 +318,19 @@ describe('Users API (E2E)', () => {
       const first = await createUser();
       const second = await createUser();
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .put(`${baseUrl}/${first.id}`)
         .send({ email: second.email })
         .expect(409);
 
-      expect(response.body.statusCode).toBe(409);
+      expect(getResponseBody<unknown>(response).statusCode).toBe(409);
     });
 
     // TC_USER_021
     it('should reject an invalid email during update', async () => {
       const created = await createUser();
 
-      await request(app.getHttpServer())
+      await request(server)
         .put(`${baseUrl}/${created.id}`)
         .send({ email: 'johnexample.com' })
         .expect(400);
@@ -309,7 +340,7 @@ describe('Users API (E2E)', () => {
     it('should reject unsupported extra properties during update', async () => {
       const created = await createUser();
 
-      await request(app.getHttpServer())
+      await request(server)
         .put(`${baseUrl}/${created.id}`)
         .send({
           name: 'Updated Name',
@@ -322,7 +353,7 @@ describe('Users API (E2E)', () => {
     it('should reject whitespace-only name during update', async () => {
       const created = await createUser();
 
-      await request(app.getHttpServer())
+      await request(server)
         .put(`${baseUrl}/${created.id}`)
         .send({ name: '   ' })
         .expect(400);
@@ -333,24 +364,26 @@ describe('Users API (E2E)', () => {
       const created = await createUser();
       const updatedEmail = `UPPER_UPDATE_${nextToken()}@EXAMPLE.COM`;
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .put(`${baseUrl}/${created.id}`)
         .send({ email: updatedEmail })
         .expect(200);
 
-      expect(response.body.data.email).toBe(updatedEmail.toLowerCase());
+      const body = getResponseBody<User>(response);
+
+      expect(body.data.email).toBe(updatedEmail.toLowerCase());
     });
 
     // TC_USER_025
     it('should reject a name exceeding maximum allowed length on update', async () => {
       const created = await createUser();
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .put(`${baseUrl}/${created.id}`)
         .send({ name: 'A'.repeat(10000) })
         .expect(400);
 
-      expect(response.body.statusCode).toBe(400);
+      expect(getResponseBody<unknown>(response).statusCode).toBe(400);
     });
 
     // TC_USER_026
@@ -358,12 +391,14 @@ describe('Users API (E2E)', () => {
       const created = await createUser();
       const updatedName = "José O'Neil-Test";
 
-      const response = await request(app.getHttpServer())
+      const response = await request(server)
         .put(`${baseUrl}/${created.id}`)
         .send({ name: updatedName })
         .expect(200);
 
-      expect(response.body.data.name).toBe(updatedName);
+      const body = getResponseBody<User>(response);
+
+      expect(body.data.name).toBe(updatedName);
     });
   });
 
@@ -372,12 +407,12 @@ describe('Users API (E2E)', () => {
     it('should retrieve users as a collection', async () => {
       await createUser();
 
-      const response = await request(app.getHttpServer())
-        .get(baseUrl)
-        .expect(200);
+      const response = await request(server).get(baseUrl).expect(200);
 
-      expect(response.body.statusCode).toBe(200);
-      expect(Array.isArray(response.body.data)).toBe(true);
+      const body = getResponseBody<User[]>(response);
+
+      expect(body.statusCode).toBe(200);
+      expect(Array.isArray(body.data)).toBe(true);
     });
   });
 });
