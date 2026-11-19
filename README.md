@@ -1,4 +1,4 @@
-# Ella API — QA / DevOps Intern Assessment
+#  
 
 This repository contains a NestJS API used to assess **QA / DevOps Intern** candidates. It
 simulates an e-commerce backend with **Users**, **Products**, and **Transactions** modules.
