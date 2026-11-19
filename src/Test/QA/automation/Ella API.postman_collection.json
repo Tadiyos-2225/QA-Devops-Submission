@@ -1,0 +1,645 @@
+{
+  "info": {
+    "_postman_id": "192e0281-082f-4d83-8bfc-891370ec4008",
+    "name": "Ella API — QA / DevOps Intern Assessment Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26790615"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get All Users",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "accept",
+                    "value": "*/*"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/users",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1897"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"769-Ktz+bvUo/nStDdXkbDNFbV46gPw\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 19 Nov 2026 08:37:54 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"statusCode\": 200,\n    \"message\": \"Users retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 11,\n            \"name\": \" HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE  HAILE \",\n            \"email\": \" TADiyos2222r5@gmail.comTADiyos2222r5@gmail.com \",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:39:54.734Z\",\n            \"updatedAt\": \"2026-11-18T16:39:54.734Z\"\n        },\n        {\n            \"id\": 12,\n            \"name\": \"HAILE\",\n            \"email\": \"TADIYOS2222r5@gmail.com\",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:42:35.584Z\",\n            \"updatedAt\": \"2026-11-18T16:42:35.584Z\"\n        },\n        {\n            \"id\": 13,\n            \"name\": \" HAILE  \",\n            \"email\": \"TADIYOS2222r5@gmail.com   \",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:43:13.601Z\",\n            \"updatedAt\": \"2026-11-18T16:43:13.601Z\"\n        },\n        {\n            \"id\": 19,\n            \"name\": \"@@@ \",\n            \"email\": \"TADIYO1S@@@ .com\",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T17:31:37.136Z\",\n            \"updatedAt\": \"2026-11-18T17:31:37.136Z\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \" Haile \",\n            \"email\": \" tadiyos2222r5@gmail.com \",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:37:16.444Z\",\n            \"updatedAt\": \"2026-11-18T16:37:16.444Z\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Seyoum\",\n            \"email\": \"tadiyos22225gmail.com\",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:28:51.129Z\",\n            \"updatedAt\": \"2026-11-18T16:28:51.129Z\"\n        },\n        {\n            \"id\": 16,\n            \"name\": \"@@@\",\n            \"email\": \"TADIYO1S@@@.com\",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T17:07:53.427Z\",\n            \"updatedAt\": \"2026-11-18T17:07:53.427Z\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Seyoum\",\n            \"email\": \"tadiyos22225@gmail.com\",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:09:16.393Z\",\n            \"updatedAt\": \"2026-11-18T16:09:16.393Z\"\n        },\n        {\n            \"id\": 1,\n            \"name\": \"@@@\",\n            \"email\": \"TADIYOS@@@.com\",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-17T22:07:14.474Z\",\n            \"updatedAt\": \"2026-11-18T17:31:16.183Z\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \" HAILE \",\n            \"email\": \" TADiyos2222r5@gmail.com \",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:38:09.659Z\",\n            \"updatedAt\": \"2026-11-18T16:38:09.659Z\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Haile\",\n            \"email\": \"tadiyos2222r5@gmail.com\",\n            \"transactions\": [],\n            \"createdAt\": \"2026-11-18T16:33:02.537Z\",\n            \"updatedAt\": \"2026-11-18T16:33:02.537Z\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": 1222,\n  \"email\": \"tadiyos22225@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create User",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "accept",
+                    "value": "*/*"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Seyoum\",\n  \"email\": \"tadiyos22225@gmail.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/users",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "199"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"c7-8NLKdj2n0V+GtTkjyPqIy/yZxU8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 19 Nov 2026 07:09:16 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"statusCode\": 201,\n    \"message\": \"User created successfully\",\n    \"data\": {\n        \"id\": 4,\n        \"name\": \"Seyoum\",\n        \"email\": \"tadiyos22225@gmail.com\",\n        \"createdAt\": \"2026-11-18T16:09:16.393Z\",\n        \"updatedAt\": \"2026-11-18T16:09:16.393Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get User By Id",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "accept",
+                    "value": "*/*"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:4000/users/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "208"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"d0-xKfnVobX1Adss4v2FuZGXJgLeqI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 19 Nov 2026 08:38:10 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"statusCode\": 200,\n    \"message\": \"User retrieved successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"@@@\",\n        \"email\": \"TADIYOS@@@.com\",\n        \"transactions\": [],\n        \"createdAt\": \"2026-11-17T22:07:14.474Z\",\n        \"updatedAt\": \"2026-11-18T17:31:16.183Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"tadiyos_up\"\n  \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update User",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "accept",
+                    "value": "*/*"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"@@@\",\n  \"email\": \"TADIYOS@@@.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BaseURL}}/users/1",
+                  "host": [
+                    "{{BaseURL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "188"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"bc-CBFqjnjVVgnhizzVRqaHN6j8Wmk\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 19 Nov 2026 08:40:53 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"statusCode\": 200,\n    \"message\": \"User updated successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"@@@\",\n        \"email\": \"TADIYOS@@@.com\",\n        \"createdAt\": \"2026-11-17T22:07:14.474Z\",\n        \"updatedAt\": \"2026-11-18T17:31:16.183Z\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"price\": 0,\n  \"quantity\": 0,\n  \"status\": \"FOR_SALE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get product By id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/products/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"price\": 0,\n  \"quantity\": 0,\n  \"status\": \"FOR_SALE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/products/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transaction",
+      "item": [
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 0,\n  \"productId\": 0,\n  \"quantity\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4000/transactions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "transactions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/transactions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "transactions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transaction By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:4000/transactions/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4000",
+              "path": [
+                "transactions",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "APP",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "accept",
+            "value": "*/*"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:4000/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
