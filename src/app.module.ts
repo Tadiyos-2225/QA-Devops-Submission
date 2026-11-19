@@ -6,7 +6,7 @@ import { ProductsModule } from './products/products.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
-
+import {HealthController} from './health/health.controller';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,15 +20,16 @@ import { AppController } from './app.controller';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       migrations: ['dist/migrations/*.js'],
       migrationsRun: true,
     }),
     UsersModule,
     ProductsModule,
-    TransactionsModule,
+    TransactionsModule
+    
   ],
   providers: [AppService],
-  controllers: [AppController],
+  controllers: [AppController,HealthController],
 })
 export class AppModule {}

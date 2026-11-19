@@ -49,10 +49,10 @@ document your work, and your attention to detail than in how many items you fini
    `Dockerfile`, `docker-compose.yml`, and `docker-compose.dev.yml`. Document any problems
    you hit getting a clean build/run, how you diagnosed them, and how you fixed them.
 
-3. **Environment configuration**
-   Using `.env.example` as a starting point, document the environment variables required
-   for the **development**, **staging**, and **testing** environments, and explain what
-   changes between them.
+   3. **Environment configuration**
+      Using `.env.example` as a starting point, document the environment variables required
+      for the **development**, **staging**, and **testing** environments, and explain what
+      changes between them.
 
 4. **Health checks & monitoring** *(nice to have)*
    Add a simple health-check endpoint (e.g. `GET /health`) **or** describe how you would

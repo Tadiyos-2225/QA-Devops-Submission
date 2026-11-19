@@ -1,4 +1,3 @@
-
 import {
   Injectable,
   HttpException,
@@ -11,29 +10,6 @@ import { Repository, QueryFailedError } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ApiResponse, ProductStatus } from 'src/constants';
-
-function hasPostgresErrorCode(
-  error: unknown,
-  code: string,
-): boolean {
-  if (!(error instanceof QueryFailedError)) {
-    return false;
-  }
-
-  const driverError: unknown = error.driverError;
-
-  if (
-    typeof driverError !== 'object' ||
-    driverError === null ||
-    !('code' in driverError)
-  ) {
-    return false;
-  }
-
-  const errorCode: unknown = driverError.code;
-
-  return typeof errorCode === 'string' && errorCode === code;
-}
 
 @Injectable()
 export class ProductsService {
@@ -48,24 +24,24 @@ export class ProductsService {
         ...dto,
         status: dto.status || ProductStatus.FOR_SALE,
       });
-
       const savedProduct = await this.productRepository.save(product);
-
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Product created successfully',
         data: savedProduct,
       };
     } catch (error: unknown) {
-      if (hasPostgresErrorCode(error, '23505')) {
+      if (
+        error instanceof QueryFailedError &&
+        (error as any).code === '23505'
+      ) {
         throw new ConflictException('Product name already exists');
       }
-
       throw new HttpException(
         {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error creating product',
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: (error as Error).message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -77,7 +53,6 @@ export class ProductsService {
       const products = await this.productRepository.find({
         relations: ['transactions'],
       });
-
       return {
         statusCode: HttpStatus.OK,
         message: 'Products retrieved successfully',
@@ -88,7 +63,7 @@ export class ProductsService {
         {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error retrieving products',
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: (error as Error).message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -101,28 +76,21 @@ export class ProductsService {
         where: { id },
         relations: ['transactions'],
       });
-
       if (!product) {
-        throw new NotFoundException(
-          `Product with ID ${id} not found`,
-        );
+        throw new NotFoundException(`Product with ID ${id} not found`);
       }
-
       return {
         statusCode: HttpStatus.OK,
         message: 'Product retrieved successfully',
         data: product,
       };
     } catch (error: unknown) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
+      if (error instanceof NotFoundException) throw error;
       throw new HttpException(
         {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error retrieving product',
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: (error as Error).message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -133,14 +101,9 @@ export class ProductsService {
     id: number,
     dto: CreateProductDto,
   ): Promise<ApiResponse<Product>> {
-    const product = await this.productRepository.findOne({
-      where: { id },
-    });
-
+    const product = await this.productRepository.findOne({ where: { id } });
     if (!product) {
-      throw new NotFoundException(
-        `Product with ID ${id} not found`,
-      );
+      throw new NotFoundException(`Product with ID ${id} not found`);
     }
 
     try {
@@ -157,15 +120,18 @@ export class ProductsService {
         data: updatedProduct,
       };
     } catch (error: unknown) {
-      if (hasPostgresErrorCode(error, '23505')) {
+      if (error instanceof NotFoundException) throw error;
+      if (
+        error instanceof QueryFailedError &&
+        (error as any).code === '23505'
+      ) {
         throw new ConflictException('Product name already exists');
       }
-
       throw new HttpException(
         {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Error updating product',
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: (error as Error).message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
